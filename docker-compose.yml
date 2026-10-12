@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: change-me
+      POSTGRES_DB: sbar
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - pgdata:/var/lib/postgresql/data
+  api:
+    build: .
+    environment:
+      JWT_SECRET: change-me-in-production
+    ports: ["8000:8000"]
+    depends_on: [db]
+volumes:
+  pgdata:
